@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+  <title>🌯 Shawarma Order Bot – Documentation</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,sans-serif;background:#f5f7fb;color:#1e293b;line-height:1.6;padding:12px;}
+    .container{max-width:1200px;margin:0 auto;background:white;border-radius:24px;box-shadow:0 20px 40px rgba(129,129,129,.08);overflow:hidden;}
+    .header{background:linear-gradient(135deg,#2b3a67 0%,#1e2b4a 100%);color:white;padding:30px 25px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:15px;}
+    .header-text{flex:1;min-width:200px;}
+    .header h1{font-size:2rem;font-weight:600;margin-bottom:8px;line-height:1.2;}
+    .header p{font-size:1.1rem;opacity:.9;}
+    .badge{background:rgba(255,255,255,.2);padding:5px 12px;border-radius:30px;display:inline-block;font-size:.85rem;margin-top:12px;}
+    .lang-switcher{display:flex;gap:8px;background:rgba(255,255,255,.15);padding:8px 12px;border-radius:40px;backdrop-filter:blur(5px);align-self:flex-start;flex-wrap:wrap;}
+    .lang-btn{cursor:pointer;font-size:1.6rem;line-height:1;transition:transform .2s;opacity:.7;filter:grayscale(.5);padding:2px 5px;}
+    .lang-btn.active{opacity:1;transform:scale(1.2);filter:grayscale(0);}
+    .lang-btn:hover{transform:scale(1.2);opacity:1;}
+    .content{padding:30px 25px;}
+    h2{font-size:1.8rem;margin:35px 0 18px;color:#1e2b4a;border-bottom:3px solid #e6edf5;padding-bottom:8px;}
+    h3{font-size:1.4rem;margin:25px 0 12px;color:#2b3a67;}
+    h4{font-size:1.2rem;margin:18px 0 8px;color:#475569;}
+    p,li{color:#334155;font-size:1rem;}
+    ul,ol{padding-left:20px;margin:12px 0;}
+    li{margin:6px 0;}
+    code{background:#f1f5f9;padding:2px 6px;border-radius:6px;font-family:'Menlo','Monaco',monospace;font-size:.9rem;color:#c0262b;border:1px solid #e2e8f0;word-break:break-word;}
+    pre{background:#0f172a;color:#e2e8f0;padding:15px;border-radius:12px;overflow-x:auto;font-family:'Menlo','Monaco',monospace;font-size:.85rem;margin:20px 0;white-space:pre-wrap;word-wrap:break-word;}
+    .table-wrap{overflow-x:auto;margin:20px 0;border-radius:12px;border:1px solid #e2e8f0;-webkit-overflow-scrolling:touch;}
+    table{width:100%;border-collapse:collapse;background:white;min-width:600px;}
+    th{background:#f8fafc;font-weight:600;padding:12px 10px;text-align:left;border-bottom:2px solid #cbd5e1;font-size:.95rem;}
+    td{padding:10px;border-bottom:1px solid #e2e8f0;font-size:.95rem;}
+    tr:last-child td{border-bottom:none;}
+    .tip{background:#e6f7ff;border-left:5px solid #1890ff;padding:18px;border-radius:8px;margin:20px 0;}
+    .warning{background:#fff7e6;border-left:5px solid #fa8c16;padding:18px;border-radius:8px;margin:20px 0;}
+    .ad-block{background:linear-gradient(145deg,#f9fafb,#ffffff);border:2px dashed #94a3b8;border-radius:16px;padding:20px 15px;margin:30px 0;text-align:center;box-shadow:0 5px 15px rgba(0,0,0,.05);}
+    .ad-block p{font-size:1rem;margin-bottom:12px;}
+    .ad-button{display:inline-block;background:#2b3a67;color:white;padding:10px 20px;border-radius:40px;text-decoration:none;font-weight:600;transition:.2s;margin:5px;font-size:.95rem;min-width:160px;}
+    .ad-button:hover{background:#1e2b4a;transform:translateY(-2px);}
+    .ad-button.secondary{background:#475569;}
+    .ad-button.secondary:hover{background:#334155;}
+    .footer{background:#f1f4f9;padding:25px 20px;text-align:center;border-top:1px solid #d1d9e6;color:#475569;}
+    .footer a{color:#2b3a67;text-decoration:none;font-weight:500;}
+    .footer a:hover{text-decoration:underline;}
+    .toc{background:#f8fafc;padding:20px;border-radius:16px;margin:25px 0;border:1px solid #e2e8f0;}
+    .toc h3{margin-top:0;}
+    .toc ul{columns:2;column-gap:30px;list-style:none;padding-left:0;}
+    .toc li{margin:8px 0;}
+    .toc a{color:#2b3a67;text-decoration:none;font-weight:500;font-size:.95rem;}
+    .toc a:hover{text-decoration:underline;}
+
+    @media (max-width:768px){
+      body{padding:8px;}
+      .header{padding:20px 15px;flex-direction:column;align-items:flex-start;}
+      .lang-switcher{align-self:flex-end;margin-top:5px;}
+      .header h1{font-size:1.8rem;}
+      .header p{font-size:1rem;}
+      .content{padding:20px 15px;}
+      h2{font-size:1.6rem;margin:30px 0 15px;}
+      h3{font-size:1.3rem;}
+      h4{font-size:1.1rem;}
+      .toc ul{columns:1;}
+      .ad-button{display:block;width:90%;margin:10px auto;}
+      table{min-width:100%;}
+      th,td{padding:8px;font-size:.9rem;}
+      code{font-size:.85rem;}
+    }
+    @media (max-width:480px){
+      .header h1{font-size:1.5rem;}
+      .badge{font-size:.75rem;}
+      .lang-btn{font-size:1.4rem;}
+      h2{font-size:1.4rem;}
+      h3{font-size:1.2rem;}
+      .toc a{font-size:.9rem;}
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="header-text">
+      <h1 data-i18n="title">🌯 Documentation for Shawarma Order Bot</h1>
+      <p data-i18n="subtitle">Ordering flow • Cart • Weekly promos • Admin notifications</p>
+      <span class="badge" data-i18n="version">Version 1.0 (updated 05.03.2026)</span>
+    </div>
+    <div class="lang-switcher">
+      <span class="lang-btn active" data-lang="en" title="English">🇬🇧</span>
+      <span class="lang-btn" data-lang="uk" title="Українська">🇺🇦</span>
+      <span class="lang-btn" data-lang="ru" title="Русский">🇷🇺</span>
+    </div>
+  </div>
+
+  <div class="ad-block">
+    <p data-i18n="hero.p1">⚡ Fast ordering: choose items → cart → send to admin group.</p>
+    <p style="margin-top:10px;font-size:.95rem" data-i18n="hero.p2">Pickup only • Phone saved once • Order history stored</p>
+  </div>
+
+  <div class="content">
+    <div class="toc">
+      <h3 data-i18n="toc.title">📋 Table of Contents</h3>
+      <ul>
+        <li><a href="#about" data-i18n="toc.about">1. About the bot</a></li>
+        <li><a href="#features" data-i18n="toc.features">2. What the bot can do</a></li>
+        <li><a href="#userflow" data-i18n="toc.userflow">3. User flow (how to order)</a></li>
+        <li><a href="#admin" data-i18n="toc.admin">4. Admin setup</a></li>
+        <li><a href="#files" data-i18n="toc.files">5. Files & data storage</a></li>
+        <li><a href="#edit" data-i18n="toc.edit">6. Editing menu & prices</a></li>
+        <li><a href="#faq" data-i18n="toc.faq">7. FAQ</a></li>
+        <li><a href="#troubles" data-i18n="toc.troubles">8. Troubleshooting</a></li>
+      </ul>
+    </div>
+
+    <h2 id="about" data-i18n="about.title">1. 🤖 About the bot</h2>
+    <p data-i18n="about.p1"><strong>Shawarma Order Bot</strong> is a Telegram bot that lets users order shawarma with a simple menu + cart, then sends the final order to an admin group.</p>
+    <ul>
+      <li data-i18n="about.li1"><strong>Pickup only</strong> (no delivery).</li>
+      <li data-i18n="about.li2">Asks for phone number once and stores it.</li>
+      <li data-i18n="about.li3">Has categories: shawarma, sauces, extras, drinks.</li>
+      <li data-i18n="about.li4">Supports weekly promos (example: 2nd sauce free).</li>
+    </ul>
+
+    <h2 id="features" data-i18n="features.title">2. ✅ What the bot can do</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th data-i18n="features.th1">Feature</th>
+            <th data-i18n="features.th2">How it works</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-i18n="features.f1">Phone capture & storage</td>
+            <td data-i18n="features.d1">On first /start the user shares contact. Phone is saved in <code>phones.txt</code> and reused later (no re-share).</td>
+          </tr>
+          <tr>
+            <td data-i18n="features.f2">Main menu</td>
+            <td data-i18n="features.d2">Buttons: Order, Promotions, Order History, Info.</td>
+          </tr>
+          <tr>
+            <td data-i18n="features.f3">Fast ordering screen</td>
+            <td data-i18n="features.d3">Shows categories and a mini cart preview. One button moves to cart.</td>
+          </tr>
+          <tr>
+            <td data-i18n="features.f4">Cart management</td>
+            <td data-i18n="features.d4">In cart: increase/decrease/remove items; buttons: Add more, Place order.</td>
+          </tr>
+          <tr>
+            <td data-i18n="features.f5">Promotions logic</td>
+            <td data-i18n="features.d5">Example: sauces cost 25 грн, but the 2nd sauce in the same order becomes 0 грн automatically.</td>
+          </tr>
+          <tr>
+            <td data-i18n="features.f6">Admin notification</td>
+            <td data-i18n="features.d6">On order, bot sends message to admin group with time, items, total, and clickable phone (<code>tel:</code> link).</td>
+          </tr>
+          <tr>
+            <td data-i18n="features.f7">Order history</td>
+            <td data-i18n="features.d7">Saves each order to <code>orders_log.jsonl</code>. Users can view last 5 orders.</td>
+          </tr>
+          <tr>
+            <td data-i18n="features.f8">Info screen</td>
+            <td data-i18n="features.d8">Shows address, working hours, shop phone, pickup message.</td>
+          </tr>
+          <tr>
+            <td data-i18n="features.f9">Tech commands</td>
+            <td data-i18n="features.d9"><code>/chatid</code> prints the current chat id (useful for admin group setup).</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="userflow" data-i18n="userflow.title">3. 🧾 User flow (how to order)</h2>
+    <ol>
+      <li data-i18n="userflow.s1">User opens bot and sends <code>/start</code>.</li>
+      <li data-i18n="userflow.s2">If phone is not saved yet, user taps “Share phone”.</li>
+      <li data-i18n="userflow.s3">User taps <strong>Order</strong> → sees categories and mini cart.</li>
+      <li data-i18n="userflow.s4">User adds items in categories; mini cart updates.</li>
+      <li data-i18n="userflow.s5">User taps <strong>Go to cart</strong>, checks items, adjusts quantities.</li>
+      <li data-i18n="userflow.s6">User taps <strong>Place order</strong> (pickup).</li>
+      <li data-i18n="userflow.s7">Bot confirms success and shows shop phone for changes.</li>
+    </ol>
+
+    <div class="tip">
+      <strong data-i18n="tip.title">💡 Tip:</strong>
+      <span data-i18n="tip.text">For the smoothest flow, pin the bot link/QR in your shop and keep the admin group ID configured.</span>
+    </div>
+
+    <h2 id="admin" data-i18n="admin.title">4. 🛠 Admin setup</h2>
+    <h3 data-i18n="admin.h31">4.1 Create admin group and get chat_id</h3>
+    <ol>
+      <li data-i18n="admin.s1">Create a Telegram group for admins.</li>
+      <li data-i18n="admin.s2">Add the bot to that group.</li>
+      <li data-i18n="admin.s3">Send <code>/chatid</code> in the group to get the ID.</li>
+      <li data-i18n="admin.s4">Put it into <code>ADMIN_CHAT_ID</code> in <code>.env</code>.</li>
+    </ol>
+
+    <h3 data-i18n="admin.h32">4.2 .env example</h3>
+    <pre>BOT_TOKEN=123456:ABCDEF...
+ADMIN_CHAT_ID=-1001234567890</pre>
+
+    <h3 data-i18n="admin.h33">4.3 Run on Mac (test)</h3>
+    <pre>python3 -m venv .venv
+source .venv/bin/activate
+pip install python-telegram-bot python-dotenv
+python3 bot.py</pre>
+
+    <h2 id="files" data-i18n="files.title">5. 📁 Files & data storage</h2>
+    <ul>
+      <li data-i18n="files.li1"><code>bot.py</code> — main code.</li>
+      <li data-i18n="files.li2"><code>.env</code> — bot token and admin group id.</li>
+      <li data-i18n="files.li3"><code>phones.txt</code> — phone database (one line per user).</li>
+      <li data-i18n="files.li4"><code>orders_log.jsonl</code> — order history in JSON lines format.</li>
+    </ul>
+
+    <h2 id="edit" data-i18n="edit.title">6. ✏️ Editing menu & prices</h2>
+    <p data-i18n="edit.p1">Edit these lists in <code>bot.py</code>:</p>
+    <pre>SHAWARMA_ITEMS = [("Класична (міні)", 120), ...]
+SAUCES = [("Часниковий", 25), ...]
+EXTRAS = [("Дод. сир", 20), ...]
+DRINKS = [("Coca-Cola 0.5", 35), ...]</pre>
+
+    <div class="warning">
+      <strong data-i18n="warn.title">⚠️ Note:</strong>
+      <span data-i18n="warn.text">Inline keyboard buttons do not support HTML. That’s why “25 → 0” in sauce promo uses a unicode strike-through.</span>
+    </div>
+
+    <h2 id="faq" data-i18n="faq.title">7. ❓ FAQ</h2>
+    <h4 data-i18n="faq.q1">Why does the bot ask for the phone?</h4>
+    <p data-i18n="faq.a1">So the admin can contact the customer if something needs to be уточнено/changed. Phone is stored once and reused.</p>
+
+    <h4 data-i18n="faq.q2">Can I add delivery later?</h4>
+    <p data-i18n="faq.a2">Yes. Add a new step to ask for address and include it into admin message + order log.</p>
+
+    <h4 data-i18n="faq.q3">Where is weekly promo shown?</h4>
+    <p data-i18n="faq.a3">In “Promotions” screen and inside cart when promo is applied.</p>
+
+    <h2 id="troubles" data-i18n="troubles.title">8. 🧯 Troubleshooting</h2>
+    <h4 data-i18n="troubles.q1">ModuleNotFoundError: dotenv</h4>
+    <p data-i18n="troubles.a1">Install <code>python-dotenv</code>: <code>python3 -m pip install python-dotenv</code>.</p>
+
+    <h4 data-i18n="troubles.q2">Orders are not sent to admin group</h4>
+    <p data-i18n="troubles.a2">Check <code>ADMIN_CHAT_ID</code> and make sure the bot is in the group.</p>
+
+    <h4 data-i18n="troubles.q3">Message is not modified error</h4>
+    <p data-i18n="troubles.a3">The code uses safe edit to ignore this Telegram warning.</p>
+  </div>
+
+  <div class="footer">
+    <p data-i18n="footer.copyright">© 2026 Shawarma Order Bot – Documentation</p>
+    <p><a href="#" data-i18n="footer.top">Top</a></p>
+    <p style="margin-top: 15px; font-size: 0.8rem;" data-i18n="footer.disclaimer">Keep this file near your bot repository for quick onboarding.</p>
+  </div>
+</div>
+
+<script>
+  const translations = {
+    en: {
+      title: "🌯 Documentation for Shawarma Order Bot",
+      subtitle: "Ordering flow • Cart • Weekly promos • Admin notifications",
+      version: "Version 1.0 (updated 05.03.2026)",
+      "hero.p1": "⚡ Fast ordering: choose items → cart → send to admin group.",
+      "hero.p2": "Pickup only • Phone saved once • Order history stored",
+      "toc.title": "📋 Table of Contents",
+      "toc.about": "1. About the bot",
+      "toc.features": "2. What the bot can do",
+      "toc.userflow": "3. User flow (how to order)",
+      "toc.admin": "4. Admin setup",
+      "toc.files": "5. Files & data storage",
+      "toc.edit": "6. Editing menu & prices",
+      "toc.faq": "7. FAQ",
+      "toc.troubles": "8. Troubleshooting",
+      "about.title": "1. 🤖 About the bot",
+      "about.p1": "<strong>Shawarma Order Bot</strong> is a Telegram bot that lets users order shawarma with a simple menu + cart, then sends the final order to an admin group.",
+      "about.li1": "<strong>Pickup only</strong> (no delivery).",
+      "about.li2": "Asks for phone number once and stores it.",
+      "about.li3": "Has categories: shawarma, sauces, extras, drinks.",
+      "about.li4": "Supports weekly promos (example: 2nd sauce free).",
+      "features.title": "2. ✅ What the bot can do",
+      "features.th1": "Feature",
+      "features.th2": "How it works",
+      "features.f1": "Phone capture & storage",
+      "features.d1": "On first /start the user shares contact. Phone is saved in <code>phones.txt</code> and reused later (no re-share).",
+      "features.f2": "Main menu",
+      "features.d2": "Buttons: Order, Promotions, Order History, Info.",
+      "features.f3": "Fast ordering screen",
+      "features.d3": "Shows categories and a mini cart preview. One button moves to cart.",
+      "features.f4": "Cart management",
+      "features.d4": "In cart: increase/decrease/remove items; buttons: Add more, Place order.",
+      "features.f5": "Promotions logic",
+      "features.d5": "Example: sauces cost 25 грн, but the 2nd sauce in the same order becomes 0 грн automatically.",
+      "features.f6": "Admin notification",
+      "features.d6": "On order, bot sends message to admin group with time, items, total, and clickable phone (<code>tel:</code> link).",
+      "features.f7": "Order history",
+      "features.d7": "Saves each order to <code>orders_log.jsonl</code>. Users can view last 5 orders.",
+      "features.f8": "Info screen",
+      "features.d8": "Shows address, working hours, shop phone, pickup message.",
+      "features.f9": "Tech commands",
+      "features.d9": "<code>/chatid</code> prints the current chat id (useful for admin group setup).",
+      "userflow.title": "3. 🧾 User flow (how to order)",
+      "userflow.s1": "User opens bot and sends <code>/start</code>.",
+      "userflow.s2": "If phone is not saved yet, user taps “Share phone”.",
+      "userflow.s3": "User taps <strong>Order</strong> → sees categories and mini cart.",
+      "userflow.s4": "User adds items in categories; mini cart updates.",
+      "userflow.s5": "User taps <strong>Go to cart</strong>, checks items, adjusts quantities.",
+      "userflow.s6": "User taps <strong>Place order</strong> (pickup).",
+      "userflow.s7": "Bot confirms success and shows shop phone for changes.",
+      "tip.title": "💡 Tip:",
+      "tip.text": "For the smoothest flow, pin the bot link/QR in your shop and keep the admin group ID configured.",
+      "admin.title": "4. 🛠 Admin setup",
+      "admin.h31": "4.1 Create admin group and get chat_id",
+      "admin.s1": "Create a Telegram group for admins.",
+      "admin.s2": "Add the bot to that group.",
+      "admin.s3": "Send <code>/chatid</code> in the group to get the ID.",
+      "admin.s4": "Put it into <code>ADMIN_CHAT_ID</code> in <code>.env</code>.",
+      "admin.h32": "4.2 .env example",
+      "admin.h33": "4.3 Run on Mac (test)",
+      "files.title": "5. 📁 Files & data storage",
+      "files.li1": "<code>bot.py</code> — main code.",
+      "files.li2": "<code>.env</code> — bot token and admin group id.",
+      "files.li3": "<code>phones.txt</code> — phone database (one line per user).",
+      "files.li4": "<code>orders_log.jsonl</code> — order history in JSON lines format.",
+      "edit.title": "6. ✏️ Editing menu & prices",
+      "edit.p1": "Edit these lists in <code>bot.py</code>:",
+      "warn.title": "⚠️ Note:",
+      "warn.text": "Inline keyboard buttons do not support HTML. That’s why “25 → 0” in sauce promo uses a unicode strike-through.",
+      "faq.title": "7. ❓ FAQ",
+      "faq.q1": "Why does the bot ask for the phone?",
+      "faq.a1": "So the admin can contact the customer if something needs to be уточнено/changed. Phone is stored once and reused.",
+      "faq.q2": "Can I add delivery later?",
+      "faq.a2": "Yes. Add a new step to ask for address and include it into admin message + order log.",
+      "faq.q3": "Where is weekly promo shown?",
+      "faq.a3": "In “Promotions” screen and inside cart when promo is applied.",
+      "troubles.title": "8. 🧯 Troubleshooting",
+      "troubles.q1": "ModuleNotFoundError: dotenv",
+      "troubles.a1": "Install <code>python-dotenv</code>: <code>python3 -m pip install python-dotenv</code>.",
+      "troubles.q2": "Orders are not sent to admin group",
+      "troubles.a2": "Check <code>ADMIN_CHAT_ID</code> and make sure the bot is in the group.",
+      "troubles.q3": "Message is not modified error",
+      "troubles.a3": "The code uses safe edit to ignore this Telegram warning.",
+      "footer.copyright": "© 2026 Shawarma Order Bot – Documentation",
+      "footer.top": "Top",
+      "footer.disclaimer": "Keep this file near your bot repository for quick onboarding."
+    },
+    uk: {
+      title: "🌯 Документація бота для замовлення шаурми",
+      subtitle: "Меню • Кошик • Акції тижня • Повідомлення адміну",
+      version: "Версія 1.0 (оновлено 05.03.2026)",
+      "hero.p1": "⚡ Швидке замовлення: вибір позицій → кошик → відправка в адмін‑групу.",
+      "hero.p2": "Тільки самовивіз • Номер зберігається 1 раз • Історія замовлень",
+      "toc.title": "📋 Зміст",
+      "toc.about": "1. Про бота",
+      "toc.features": "2. Що вміє бот",
+      "toc.userflow": "3. Як замовити",
+      "toc.admin": "4. Налаштування для адміна",
+      "toc.files": "5. Файли та зберігання даних",
+      "toc.edit": "6. Як змінити меню та ціни",
+      "toc.faq": "7. FAQ",
+      "toc.troubles": "8. Вирішення проблем",
+      "about.title": "1. 🤖 Про бота",
+      "about.p1": "<strong>Бот для замовлення шаурми</strong> дозволяє клієнту зібрати замовлення через меню та кошик, а потім надсилає готове замовлення в адмін‑групу.",
+      "about.li1": "<strong>Тільки самовивіз</strong> (без доставки).",
+      "about.li2": "Просить номер телефону один раз і зберігає його.",
+      "about.li3": "Категорії: шаурма, соуси, добавки, напої.",
+      "about.li4": "Підтримує акції тижня (приклад: 2-й соус безкоштовно).",
+      "features.title": "2. ✅ Що вміє бот",
+      "features.th1": "Функція",
+      "features.th2": "Як працює",
+      "features.f1": "Збір та збереження номера",
+      "features.d1": "Після першого /start користувач надсилає контакт. Номер зберігається у <code>phones.txt</code> і більше не треба надсилати.",
+      "features.f2": "Головне меню",
+      "features.d2": "Кнопки: Замовити, Акції, Історія, Інформація.",
+      "features.f3": "Екран швидкого замовлення",
+      "features.d3": "Показує категорії та міні‑кошик. Одна кнопка переносить у кошик.",
+      "features.f4": "Керування кошиком",
+      "features.d4": "У кошику: +/‑/видалити позицію; кнопки: Додати ще, Замовити.",
+      "features.f5": "Логіка акцій",
+      "features.d5": "Приклад: соуси по 25 грн, але 2-й соус у цьому ж замовленні стає 0 грн автоматично.",
+      "features.f6": "Повідомлення адміну",
+      "features.d6": "Після замовлення бот надсилає в адмін‑групу час, список, суму та клікабельний телефон (<code>tel:</code>).",
+      "features.f7": "Історія замовлень",
+      "features.d7": "Кожне замовлення пишеться у <code>orders_log.jsonl</code>. Користувач бачить останні 5.",
+      "features.f8": "Екран “Інформація”",
+      "features.d8": "Адреса, графік, телефон закладу, повідомлення про самовивіз.",
+      "features.f9": "Тех‑команди",
+      "features.d9": "<code>/chatid</code> показує id чату (для налаштування адмін‑групи).",
+      "userflow.title": "3. 🧾 Як замовити",
+      "userflow.s1": "Клієнт відкриває бота та пише <code>/start</code>.",
+      "userflow.s2": "Якщо номер ще не збережено — натискає “Поділитися номером”.",
+      "userflow.s3": "Натискає <strong>Замовити</strong> → бачить категорії та міні‑кошик.",
+      "userflow.s4": "Додає позиції, міні‑кошик оновлюється.",
+      "userflow.s5": "Натискає <strong>Перейти в кошик</strong>, перевіряє, змінює кількість.",
+      "userflow.s6": "Натискає <strong>Замовити</strong> (самовивіз).",
+      "userflow.s7": "Бот підтверджує успішне оформлення та показує телефон закладу для змін.",
+      "tip.title": "💡 Порада:",
+      "tip.text": "Щоб було максимально зручно, закріпи QR/посилання на бота у закладі та налаштуй адмін‑групу.",
+      "admin.title": "4. 🛠 Налаштування для адміна",
+      "admin.h31": "4.1 Створи адмін‑групу і отримай chat_id",
+      "admin.s1": "Створи Telegram‑групу для адмінів.",
+      "admin.s2": "Додай бота у цю групу.",
+      "admin.s3": "Напиши <code>/chatid</code> у групі, щоб отримати ID.",
+      "admin.s4": "Запиши його у <code>ADMIN_CHAT_ID</code> в <code>.env</code>.",
+      "admin.h32": "4.2 Приклад .env",
+      "admin.h33": "4.3 Запуск на Mac (тест)",
+      "files.title": "5. 📁 Файли та зберігання даних",
+      "files.li1": "<code>bot.py</code> — головний код.",
+      "files.li2": "<code>.env</code> — токен та id адмін‑групи.",
+      "files.li3": "<code>phones.txt</code> — база номерів (по рядку на користувача).",
+      "files.li4": "<code>orders_log.jsonl</code> — історія замовлень (JSONL).",
+      "edit.title": "6. ✏️ Як змінити меню та ціни",
+      "edit.p1": "Зміни ці списки у <code>bot.py</code>:",
+      "warn.title": "⚠️ Примітка:",
+      "warn.text": "HTML у тексті кнопок не працює. Тому перекреслення “25 → 0” зроблено через unicode‑символ.",
+      "faq.title": "7. ❓ FAQ",
+      "faq.q1": "Навіщо бот просить номер телефону?",
+      "faq.a1": "Щоб адміністратор міг зв’язатися з клієнтом, якщо треба уточнити/змінити замовлення. Номер зберігається один раз.",
+      "faq.q2": "Чи можна потім додати доставку?",
+      "faq.a2": "Так. Додай крок із адресою та включи її в повідомлення адміну й у лог замовлення.",
+      "faq.q3": "Де показуються акції?",
+      "faq.a3": "В розділі “Акції” і в кошику, коли акція застосована.",
+      "troubles.title": "8. 🧯 Вирішення проблем",
+      "troubles.q1": "ModuleNotFoundError: dotenv",
+      "troubles.a1": "Встанови <code>python-dotenv</code>: <code>python3 -m pip install python-dotenv</code>.",
+      "troubles.q2": "Замовлення не відправляються в адмін‑групу",
+      "troubles.a2": "Перевір <code>ADMIN_CHAT_ID</code> і переконайся, що бот у групі.",
+      "troubles.q3": "Message is not modified",
+      "troubles.a3": "У коді є safe‑edit, який ігнорує це попередження Telegram.",
+      "footer.copyright": "© 2026 Бот замовлення шаурми – Документація",
+      "footer.top": "Наверх",
+      "footer.disclaimer": "Збережи цей файл поряд із репозиторієм бота — зручно для клієнтів та адмінів."
+    },
+    ru: {
+      title: "🌯 Документация бота заказа шаурмы",
+      subtitle: "Меню • Корзина • Акции недели • Уведомления админу",
+      version: "Версия 1.0 (обновлено 05.03.2026)",
+      "hero.p1": "⚡ Быстрый заказ: выбор позиций → корзина → отправка в админ‑группу.",
+      "hero.p2": "Только самовывоз • Номер сохраняется 1 раз • История заказов",
+      "toc.title": "📋 Содержание",
+      "toc.about": "1. О боте",
+      "toc.features": "2. Что умеет бот",
+      "toc.userflow": "3. Как заказать",
+      "toc.admin": "4. Настройка для админа",
+      "toc.files": "5. Файлы и хранение данных",
+      "toc.edit": "6. Как менять меню и цены",
+      "toc.faq": "7. FAQ",
+      "toc.troubles": "8. Решение проблем",
+      "about.title": "1. 🤖 О боте",
+      "about.p1": "<strong>Бот заказа шаурмы</strong> позволяет клиенту собрать заказ через меню и корзину, затем отправляет готовый заказ в админ‑группу.",
+      "about.li1": "<strong>Только самовывоз</strong> (без доставки).",
+      "about.li2": "Просит номер телефона один раз и сохраняет.",
+      "about.li3": "Категории: шаурма, соусы, добавки, напитки.",
+      "about.li4": "Поддерживает акции недели (пример: 2-й соус бесплатно).",
+      "features.title": "2. ✅ Что умеет бот",
+      "features.th1": "Функция",
+      "features.th2": "Как работает",
+      "features.f1": "Сбор и сохранение номера",
+      "features.d1": "После первого /start пользователь отправляет контакт. Номер сохраняется в <code>phones.txt</code> и больше не нужно делиться.",
+      "features.f2": "Главное меню",
+      "features.d2": "Кнопки: Заказать, Акции, История, Информация.",
+      "features.f3": "Экран быстрого заказа",
+      "features.d3": "Показывает категории и мини‑корзину. Одна кнопка переносит в корзину.",
+      "features.f4": "Управление корзиной",
+      "features.d4": "В корзине: +/‑/удалить; кнопки: Добавить ещё, Заказать.",
+      "features.f5": "Логика акций",
+      "features.d5": "Пример: соусы по 25 грн, но 2-й соус в этом же заказе становится 0 грн автоматически.",
+      "features.f6": "Сообщение админу",
+      "features.d6": "После заказа бот шлёт в админ‑группу время, список, сумму и кликабельный телефон (<code>tel:</code>).",
+      "features.f7": "История заказов",
+      "features.d7": "Каждый заказ пишется в <code>orders_log.jsonl</code>. Пользователь видит последние 5.",
+      "features.f8": "Экран “Информация”",
+      "features.d8": "Адрес, график, телефон, сообщение про самовывоз.",
+      "features.f9": "Тех‑команды",
+      "features.d9": "<code>/chatid</code> показывает id чата (для настройки админ‑группы).",
+      "userflow.title": "3. 🧾 Как заказать",
+      "userflow.s1": "Клиент открывает бота и пишет <code>/start</code>.",
+      "userflow.s2": "Если номер не сохранён — нажимает “Поделиться номером”.",
+      "userflow.s3": "Нажимает <strong>Заказать</strong> → видит категории и мини‑корзину.",
+      "userflow.s4": "Добавляет позиции, мини‑корзина обновляется.",
+      "userflow.s5": "Жмёт <strong>Перейти в корзину</strong>, проверяет, меняет количество.",
+      "userflow.s6": "Жмёт <strong>Заказать</strong> (самовывоз).",
+      "userflow.s7": "Бот подтверждает и показывает телефон заведения для изменений.",
+      "tip.title": "💡 Совет:",
+      "tip.text": "Чтобы было максимально удобно, закрепи QR/ссылку на бота в заведении и настрой админ‑группу.",
+      "admin.title": "4. 🛠 Настройка для админа",
+      "admin.h31": "4.1 Создай админ‑группу и получи chat_id",
+      "admin.s1": "Создай Telegram‑группу для админов.",
+      "admin.s2": "Добавь бота в эту группу.",
+      "admin.s3": "Напиши <code>/chatid</code> в группе, чтобы получить ID.",
+      "admin.s4": "Запиши его в <code>ADMIN_CHAT_ID</code> в <code>.env</code>.",
+      "admin.h32": "4.2 Пример .env",
+      "admin.h33": "4.3 Запуск на Mac (тест)",
+      "files.title": "5. 📁 Файлы и хранение данных",
+      "files.li1": "<code>bot.py</code> — основной код.",
+      "files.li2": "<code>.env</code> — токен и id админ‑группы.",
+      "files.li3": "<code>phones.txt</code> — база номеров (по строке на пользователя).",
+      "files.li4": "<code>orders_log.jsonl</code> — история заказов (JSONL).",
+      "edit.title": "6. ✏️ Как менять меню и цены",
+      "edit.p1": "Меняй эти списки в <code>bot.py</code>:",
+      "warn.title": "⚠️ Примечание:",
+      "warn.text": "HTML в тексте кнопок не работает. Поэтому зачёркивание “25 → 0” сделано unicode‑символом.",
+      "faq.title": "7. ❓ FAQ",
+      "faq.q1": "Зачем бот просит номер телефона?",
+      "faq.a1": "Чтобы админ мог связаться с клиентом, если нужно уточнить/изменить заказ. Номер сохраняется один раз.",
+      "faq.q2": "Можно ли потом добавить доставку?",
+      "faq.a2": "Да. Добавь шаг с адресом и включи его в сообщение админу и лог заказа.",
+      "faq.q3": "Где показываются акции?",
+      "faq.a3": "В разделе “Акции” и в корзине, когда акция применяется.",
+      "troubles.title": "8. 🧯 Решение проблем",
+      "troubles.q1": "ModuleNotFoundError: dotenv",
+      "troubles.a1": "Установи <code>python-dotenv</code>: <code>python3 -m pip install python-dotenv</code>.",
+      "troubles.q2": "Заказы не отправляются в админ‑группу",
+      "troubles.a2": "Проверь <code>ADMIN_CHAT_ID</code> и убедись, что бот в группе.",
+      "troubles.q3": "Message is not modified",
+      "troubles.a3": "В коде есть safe‑edit, который игнорирует это предупреждение Telegram.",
+      "footer.copyright": "© 2026 Бот заказа шаурмы – Документация",
+      "footer.top": "Наверх",
+      "footer.disclaimer": "Держи этот файл рядом с репозиторием бота — удобно для клиента и админов."
+    }
+  };
+
+  function setLanguage(lang) {
+    if (!translations[lang]) return;
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (translations[lang][key]) el.innerHTML = translations[lang][key];
+    });
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.remove('active');
+      if (btn.dataset.lang === lang) btn.classList.add('active');
+    });
+    localStorage.setItem('preferred-lang', lang);
+  }
+
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
+  });
+
+  const savedLang = localStorage.getItem('preferred-lang') || 'en';
+  setLanguage(savedLang);
+</script>
+</body>
+</html>

@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+  <title>@hire_filter_bot – Documentation</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body{
+      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,sans-serif;
+      background:#f5f7fb; color:#1e293b; line-height:1.6; padding:12px;
+    }
+    .container{
+      max-width:1200px; margin:0 auto; background:#fff; border-radius:24px;
+      box-shadow:0 20px 40px rgba(129,129,129,.08); overflow:hidden;
+    }
+    .header{
+      background:linear-gradient(135deg,#2b3a67 0%,#1e2b4a 100%);
+      color:#fff; padding:30px 25px; display:flex; align-items:center; justify-content:space-between;
+      flex-wrap:wrap; gap:15px;
+    }
+    .header-text{ flex:1; min-width:200px; }
+    .header h1{ font-size:2rem; font-weight:600; margin-bottom:8px; line-height:1.2; }
+    .header p{ font-size:1.1rem; opacity:.9; }
+    .badge{
+      background:rgba(255,255,255,.2); padding:5px 12px; border-radius:30px;
+      display:inline-block; font-size:.85rem; margin-top:12px;
+    }
+    .lang-switcher{
+      display:flex; gap:8px; background:rgba(255,255,255,.15); padding:8px 12px;
+      border-radius:40px; backdrop-filter:blur(5px); align-self:flex-start; flex-wrap:wrap;
+    }
+    .lang-btn{
+      cursor:pointer; font-size:1.6rem; line-height:1; transition:transform .2s;
+      opacity:.7; filter:grayscale(.5); padding:2px 5px;
+    }
+    .lang-btn.active{ opacity:1; transform:scale(1.2); filter:grayscale(0); }
+    .lang-btn:hover{ transform:scale(1.2); opacity:1; }
+
+    .content{ padding:30px 25px; }
+    h2{
+      font-size:1.8rem; margin:35px 0 18px; color:#1e2b4a;
+      border-bottom:3px solid #e6edf5; padding-bottom:8px;
+    }
+    h3{ font-size:1.4rem; margin:25px 0 12px; color:#2b3a67; }
+    h4{ font-size:1.2rem; margin:18px 0 8px; color:#475569; }
+    p, li{ color:#626262; font-size:1rem; }
+    ul, ol{ padding-left:20px; margin:12px 0; }
+    li{ margin:6px 0; }
+
+    code{
+      background:#f1f5f9; padding:2px 6px; border-radius:6px;
+      font-family:'Menlo','Monaco',monospace; font-size:.9rem; color:#c0262b;
+      border:1px solid #e2e8f0; word-break:break-word;
+    }
+    pre{
+      background:#0f172a; color:#e2e8f0; padding:15px; border-radius:12px;
+      overflow-x:auto; font-family:'Menlo','Monaco',monospace; font-size:.85rem;
+      margin:20px 0; white-space:pre-wrap; word-wrap:break-word;
+    }
+
+    .table-wrap{
+      overflow-x:auto; margin:20px 0; border-radius:12px; border:1px solid #e2e8f0;
+      -webkit-overflow-scrolling:touch;
+    }
+    table{
+      width:100%; border-collapse:collapse; background:#fff; min-width:600px;
+    }
+    th{
+      background:#f8fafc; font-weight:600; padding:12px 10px; text-align:left;
+      border-bottom:2px solid #cbd5e1; font-size:.95rem;
+    }
+    td{ padding:10px; border-bottom:1px solid #e2e8f0; font-size:.95rem; }
+    tr:last-child td{ border-bottom:none; }
+
+    .tip{
+      background:#e6f7ff; border-left:5px solid #1890ff; padding:18px;
+      border-radius:8px; margin:20px 0;
+    }
+    .warning{
+      background:#fff7e6; border-left:5px solid #fa8c16; padding:18px;
+      border-radius:8px; margin:20px 0;
+    }
+    .ad-block{
+      background:linear-gradient(145deg,#f9fafb,#ffffff);
+      border:2px dashed #94a3b8; border-radius:16px; padding:20px 15px; margin:30px 0;
+      text-align:center; box-shadow:0 5px 15px rgba(0,0,0,.05);
+    }
+    .ad-block p{ font-size:1rem; margin-bottom:12px; }
+    .ad-button{
+      display:inline-block; background:#2b3a67; color:#fff; padding:10px 20px; border-radius:40px;
+      text-decoration:none; font-weight:600; transition:.2s; margin:5px; font-size:.95rem; min-width:160px;
+    }
+    .ad-button:hover{ background:#1e2b4a; transform:translateY(-2px); }
+    .ad-button.secondary{ background:#475569; }
+    .ad-button.secondary:hover{ background:#334155; }
+
+    .toc{
+      background:#f8fafc; padding:20px; border-radius:16px; margin:25px 0;
+      border:1px solid #e2e8f0;
+    }
+    .toc h3{ margin-top:0; }
+    .toc ul{
+      columns:2; column-gap:30px; list-style:none; padding-left:0;
+    }
+    .toc li{ margin:8px 0; }
+    .toc a{
+      color:#2b3a67; text-decoration:none; font-weight:500; font-size:.95rem;
+    }
+    .toc a:hover{ text-decoration:underline; }
+
+    .footer{
+      background:#f1f4f9; padding:25px 20px; text-align:center;
+      border-top:1px solid #d1d9e6; color:#475569;
+    }
+    .footer a{ color:#2b3a67; text-decoration:none; font-weight:500; }
+    .footer a:hover{ text-decoration:underline; }
+
+    @media (max-width: 768px){
+      body{ padding:8px; }
+      .header{ padding:20px 15px; flex-direction:column; align-items:flex-start; }
+      .lang-switcher{ align-self:flex-end; margin-top:5px; }
+      .header h1{ font-size:1.8rem; }
+      .header p{ font-size:1rem; }
+      .content{ padding:20px 15px; }
+      h2{ font-size:1.6rem; margin:30px 0 15px; }
+      h3{ font-size:1.3rem; }
+      h4{ font-size:1.1rem; }
+      .toc ul{ columns:1; }
+      .ad-button{ display:block; width:90%; margin:10px auto; }
+      table{ min-width:100%; }
+      th, td{ padding:8px; font-size:.9rem; }
+      code{ font-size:.85rem; }
+    }
+    @media (max-width: 480px){
+      .header h1{ font-size:1.5rem; }
+      .badge{ font-size:.75rem; }
+      .lang-btn{ font-size:1.4rem; }
+      h2{ font-size:1.4rem; }
+      h3{ font-size:1.2rem; }
+      .toc a{ font-size:.9rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="header-text">
+        <h1 data-i18n="title">📘 Documentation for @hire_filter_bot</h1>
+        <p data-i18n="subtitle">Hiring funnel • Video editor screening • Admin review</p>
+        <span class="badge" data-i18n="version">Version 1.0 (updated 04.03.2026)</span>
+      </div>
+      <div class="lang-switcher">
+        <span class="lang-btn active" data-lang="en" title="English">🇬🇧</span>
+        <span class="lang-btn" data-lang="uk" title="Українська">🇺🇦</span>
+        <span class="lang-btn" data-lang="ru" title="Русский">🇷🇺</span>
+      </div>
+    </div>
+
+    <div class="ad-block">
+      <p>✨ <strong data-i18n="ad.top">Tip: keep your admin chat private</strong></p>
+      <a href="#" class="ad-button secondary" data-i18n="ad.btn">Admin best practices</a>
+      <p style="margin-top: 15px; font-size: 0.9rem;" data-i18n="ad.note">You can remove this block if you don’t need it</p>
+    </div>
+
+    <div class="content">
+      <div class="toc">
+        <h3 data-i18n="toc.title">📋 Table of Contents</h3>
+        <ul>
+          <li><a href="#about" data-i18n="toc.about">1. About the bot</a></li>
+          <li><a href="#candidate" data-i18n="toc.candidate">2. Candidate flow</a></li>
+          <li><a href="#admin" data-i18n="toc.admin">3. Admin flow</a></li>
+          <li><a href="#storage" data-i18n="toc.storage">4. Storage & cleanup</a></li>
+          <li><a href="#ai" data-i18n="toc.ai">5. AI features (optional)</a></li>
+          <li><a href="#env" data-i18n="toc.env">6. Configuration (.env)</a></li>
+          <li><a href="#faq" data-i18n="toc.faq">7. FAQ</a></li>
+        </ul>
+      </div>
+
+      <h2 id="about" data-i18n="about.title">1. 🤖 About the bot</h2>
+      <p data-i18n="about.desc1">
+        <strong>@hire_filter_bot</strong> automates screening of candidates from freelance/job platforms inside Telegram.
+        It collects a structured анкета, gives a test task, and sends everything to a private admin chat with buttons
+        “Accept / Reject”.
+      </p>
+      <p data-i18n="about.desc2"><strong>Main features:</strong></p>
+      <ul>
+        <li data-i18n="about.f1">Step-by-step questionnaire: name, phone, email, portfolio links, detailed “about”.</li>
+        <li data-i18n="about.f2">Input validation: rejects gibberish names, invalid emails, too-short answers.</li>
+        <li data-i18n="about.f3">Random delay (10–40 min) before offering the test task (human-like flow).</li>
+        <li data-i18n="about.f4">Collects Google Drive test link and forwards full profile to admin chat.</li>
+        <li data-i18n="about.f5">Admin review buttons; prevents double-click; sends result to candidate.</li>
+        <li data-i18n="about.f6">Auto cleanup: profiles without test are deleted after 30 days of inactivity.</li>
+      </ul>
+
+      <h2 id="candidate" data-i18n="candidate.title">2. 🧑‍💻 Candidate flow</h2>
+      <ol>
+        <li data-i18n="candidate.s1">Candidate starts with <code>/start</code>.</li>
+        <li data-i18n="candidate.s2">Bot asks and validates: name → phone → email → portfolio links → “about”.</li>
+        <li data-i18n="candidate.s3">After анкета is complete, bot waits a random time (10–40 min).</li>
+        <li data-i18n="candidate.s4">Bot asks: “Ready for test? Yes/No”.</li>
+        <li data-i18n="candidate.s5">If Yes: bot sends test text (from <code>TEST_TEXT</code>) and requests Drive link.</li>
+        <li data-i18n="candidate.s6">Candidate sends Drive link; bot confirms review.</li>
+      </ol>
+      <div class="tip">
+        <strong data-i18n="candidate.tip.title">💡 Tip:</strong>
+        <span data-i18n="candidate.tip.text">Candidate should set Drive access to “anyone with the link”.</span>
+      </div>
+      <div class="warning">
+        <strong data-i18n="candidate.warn.title">⚠️ Important:</strong>
+        <span data-i18n="candidate.warn.text">After a rejection, the candidate cannot reapply (blocked on /start).</span>
+      </div>
+
+      <h2 id="admin" data-i18n="admin.title">3. 🧾 Admin flow</h2>
+      <p data-i18n="admin.desc">When a test link is received, the bot sends a full profile to the admin chat with buttons:</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th data-i18n="admin.t1">Action</th>
+              <th data-i18n="admin.t2">What happens</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>✅ Accept</code></td>
+              <td data-i18n="admin.a1">Candidate gets “We’re interested, we’ll contact you soon”. Buttons disappear.</td>
+            </tr>
+            <tr>
+              <td><code>❌ Reject</code></td>
+              <td data-i18n="admin.a2">Candidate gets rejection message and becomes permanently blocked from reapplying.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="storage" data-i18n="storage.title">4. 💾 Storage & cleanup</h2>
+      <ul>
+        <li data-i18n="storage.s1">Files are stored at <code>hosting/candidati/&lt;telegram_id&gt;.txt</code></li>
+        <li data-i18n="storage.s2">Profile includes: name, phone, email, portfolio, about, tags/summary (optional), test link, status.</li>
+        <li data-i18n="storage.s3">If there is no test link and no activity for 30 days → profile is deleted automatically.</li>
+      </ul>
+
+      <h2 id="ai" data-i18n="ai.title">5. 🧠 AI features (optional)</h2>
+      <ul>
+        <li data-i18n="ai.a1">Answers only hiring-related questions in context (e.g., “What if I have no samples?”).</li>
+        <li data-i18n="ai.a2">Ignores random/trivial questions (math, unrelated).</li>
+        <li data-i18n="ai.a3">Can extract summary + skill tags from long “about” text without inventing facts.</li>
+      </ul>
+
+      <h2 id="env" data-i18n="env.title">6. ⚙️ Configuration (.env)</h2>
+      <pre>
+BOT_TOKEN=...
+ADMIN_CHAT_ID=...
+ADMIN_IDS=123,456
+AI_PROVIDER=openai
+AI_API_KEY=...
+OPENAI_MODEL=gpt-4.1-mini
+TEST_TEXT=Your test task text + links
+      </pre>
+
+      <h2 id="faq" data-i18n="faq.title">7. ❓ FAQ</h2>
+      <h4 data-i18n="faq.q1">Why does the test question appear later?</h4>
+      <p data-i18n="faq.a1">Bot uses a random delay (10–40 minutes) to simulate human processing.</p>
+
+      <h4 data-i18n="faq.q2">Where do profiles live?</h4>
+      <p data-i18n="faq.a2">In <code>hosting/candidati/&lt;telegram_id&gt;.txt</code>.</p>
+    </div>
+
+    <div class="footer">
+      <p data-i18n="footer.copyright">© 2026 @hire_filter_bot – Documentation</p>
+      <p><a href="#" data-i18n="footer.top">Top</a></p>
+    </div>
+  </div>
+
+  <script>
+    const translations = {
+      en: {
+        title: "📘 Documentation for @hire_filter_bot",
+        subtitle: "Hiring funnel • Video editor screening • Admin review",
+        version: "Version 1.0 (updated 04.03.2026)",
+        "ad.top": "Tip: keep your admin chat private",
+        "ad.btn": "Admin best practices",
+        "ad.note": "You can remove this block if you don’t need it",
+        "toc.title": "📋 Table of Contents",
+        "toc.about": "1. About the bot",
+        "toc.candidate": "2. Candidate flow",
+        "toc.admin": "3. Admin flow",
+        "toc.storage": "4. Storage & cleanup",
+        "toc.ai": "5. AI features (optional)",
+        "toc.env": "6. Configuration (.env)",
+        "toc.faq": "7. FAQ",
+        "about.title": "1. 🤖 About the bot",
+        "about.desc1": "<strong>@hire_filter_bot</strong> automates screening of candidates inside Telegram and sends full profiles to a private admin chat with Accept/Reject buttons.",
+        "about.desc2": "<strong>Main features:</strong>",
+        "about.f1": "Step-by-step questionnaire: name, phone, email, portfolio links, detailed “about”.",
+        "about.f2": "Input validation: rejects gibberish names, invalid emails, too-short answers.",
+        "about.f3": "Random delay (10–40 min) before offering the test task (human-like flow).",
+        "about.f4": "Collects Google Drive test link and forwards full profile to admin chat.",
+        "about.f5": "Admin review buttons; prevents double-click; sends result to candidate.",
+        "about.f6": "Auto cleanup: profiles without test are deleted after 30 days of inactivity.",
+        "candidate.title": "2. 🧑‍💻 Candidate flow",
+        "candidate.s1": "Candidate starts with <code>/start</code>.",
+        "candidate.s2": "Bot asks and validates: name → phone → email → portfolio links → “about”.",
+        "candidate.s3": "After анкета is complete, bot waits a random time (10–40 min).",
+        "candidate.s4": "Bot asks: “Ready for test? Yes/No”.",
+        "candidate.s5": "If Yes: bot sends test text (from <code>TEST_TEXT</code>) and requests Drive link.",
+        "candidate.s6": "Candidate sends Drive link; bot confirms review.",
+        "candidate.tip.title": "💡 Tip:",
+        "candidate.tip.text": "Candidate should set Drive access to “anyone with the link”.",
+        "candidate.warn.title": "⚠️ Important:",
+        "candidate.warn.text": "After a rejection, the candidate cannot reapply (blocked on /start).",
+        "admin.title": "3. 🧾 Admin flow",
+        "admin.desc": "When a test link is received, the bot sends a full profile to the admin chat with buttons:",
+        "admin.t1": "Action",
+        "admin.t2": "What happens",
+        "admin.a1": "Candidate gets “We’re interested, we’ll contact you soon”. Buttons disappear.",
+        "admin.a2": "Candidate gets rejection message and becomes permanently blocked from reapplying.",
+        "storage.title": "4. 💾 Storage & cleanup",
+        "storage.s1": "Files are stored at <code>hosting/candidati/&lt;telegram_id&gt;.txt</code>",
+        "storage.s2": "Profile includes: name, phone, email, portfolio, about, tags/summary (optional), test link, status.",
+        "storage.s3": "If there is no test link and no activity for 30 days → profile is deleted automatically.",
+        "ai.title": "5. 🧠 AI features (optional)",
+        "ai.a1": "Answers only hiring-related questions in context (e.g., “What if I have no samples?”).",
+        "ai.a2": "Ignores random/trivial questions (math, unrelated).",
+        "ai.a3": "Can extract summary + skill tags from long “about” text without inventing facts.",
+        "env.title": "6. ⚙️ Configuration (.env)",
+        "faq.title": "7. ❓ FAQ",
+        "faq.q1": "Why does the test question appear later?",
+        "faq.a1": "Bot uses a random delay (10–40 minutes) to simulate human processing.",
+        "faq.q2": "Where do profiles live?",
+        "faq.a2": "In <code>hosting/candidati/&lt;telegram_id&gt;.txt</code>.",
+        "footer.copyright": "© 2026 @hire_filter_bot – Documentation",
+        "footer.top": "Top",
+      },
+      uk: {
+        title: "📘 Документація бота @hire_filter_bot",
+        subtitle: "Воронка найму • Відбір монтажерів • Рішення адміна",
+        version: "Версія 1.0 (оновлено 04.03.2026)",
+        "ad.top": "Порада: тримайте адмін-чат закритим",
+        "ad.btn": "Поради для адмінів",
+        "ad.note": "Можна видалити цей блок, якщо не потрібен",
+        "toc.title": "📋 Зміст",
+        "toc.about": "1. Про бота",
+        "toc.candidate": "2. Шлях кандидата",
+        "toc.admin": "3. Шлях адміна",
+        "toc.storage": "4. Зберігання та автоочистка",
+        "toc.ai": "5. AI-функції (опційно)",
+        "toc.env": "6. Налаштування (.env)",
+        "toc.faq": "7. FAQ",
+        "about.title": "1. 🤖 Про бота",
+        "about.desc1": "<strong>@hire_filter_bot</strong> автоматизує відбір кандидатів у Telegram і надсилає повний профіль в приватний адмін-чат з кнопками Прийняти/Відхилити.",
+        "about.desc2": "<strong>Основні можливості:</strong>",
+        "about.f1": "Анкета крок за кроком: ім’я, телефон, email, портфоліо, детально “про себе”.",
+        "about.f2": "Валідація: відсікає нісенітницю в імені, неправильні email, короткі відповіді.",
+        "about.f3": "Рандомна пауза (10–40 хв) перед тестовим (людяний сценарій).",
+        "about.f4": "Збирає Drive-посилання на тест і пересилає профіль в адмін-чат.",
+        "about.f5": "Кнопки рішення; захист від повторного натискання; повідомлення кандидату.",
+        "about.f6": "Автоочистка: анкети без тестового видаляються після 30 днів неактивності.",
+        "candidate.title": "2. 🧑‍💻 Шлях кандидата",
+        "candidate.s1": "Кандидат стартує командою <code>/start</code>.",
+        "candidate.s2": "Бот питає й перевіряє: ім’я → телефон → email → портфоліо → “про себе”.",
+        "candidate.s3": "Після анкети бот чекає рандомний час (10–40 хв).",
+        "candidate.s4": "Бот питає: “Готовий/готова до тестового? Так/Ні”.",
+        "candidate.s5": "Якщо Так: бот надсилає текст тестового (<code>TEST_TEXT</code>) і просить Drive-лінк.",
+        "candidate.s6": "Кандидат надсилає Drive-лінк; бот підтверджує перевірку.",
+        "candidate.tip.title": "💡 Порада:",
+        "candidate.tip.text": "Потрібно відкрити доступ: “anyone with the link”.",
+        "candidate.warn.title": "⚠️ Важливо:",
+        "candidate.warn.text": "Після відмови кандидат не може подати анкету повторно (блок на /start).",
+        "admin.title": "3. 🧾 Шлях адміна",
+        "admin.desc": "Коли прийшов тестовий лінк, бот надсилає профіль в адмін-чат із кнопками:",
+        "admin.t1": "Дія",
+        "admin.t2": "Що відбувається",
+        "admin.a1": "Кандидату приходить “нами зацікавилися, зв’яжуться”. Кнопки зникають.",
+        "admin.a2": "Кандидату приходить відмова, і він блокується від повторної анкети.",
+        "storage.title": "4. 💾 Зберігання та автоочистка",
+        "storage.s1": "Файли зберігаються тут: <code>hosting/candidati/&lt;telegram_id&gt;.txt</code>",
+        "storage.s2": "Профіль: ім’я, телефон, email, портфоліо, про себе, теги/summary (опційно), тест-лінк, статус.",
+        "storage.s3": "Якщо тест-лінку немає і 30 днів неактивності → профіль видаляється.",
+        "ai.title": "5. 🧠 AI-функції (опційно)",
+        "ai.a1": "Відповідає тільки на питання по темі найму в контексті кроку.",
+        "ai.a2": "Ігнорує рандом/математику/не по темі.",
+        "ai.a3": "Може зробити summary + skill tags з “про себе” без вигадок.",
+        "env.title": "6. ⚙️ Налаштування (.env)",
+        "faq.title": "7. ❓ FAQ",
+        "faq.q1": "Чому питання про тестове приходить пізніше?",
+        "faq.a1": "Бот ставить рандомну паузу (10–40 хв), щоб імітувати людську перевірку.",
+        "faq.q2": "Де зберігаються профілі?",
+        "faq.a2": "У <code>hosting/candidati/&lt;telegram_id&gt;.txt</code>.",
+        "footer.copyright": "© 2026 @hire_filter_bot – Документація",
+        "footer.top": "Нагору",
+      },
+      ru: {
+        title: "📘 Документация бота @hire_filter_bot",
+        subtitle: "Воронка найма • Отбор монтажеров • Решение админа",
+        version: "Версия 1.0 (обновлено 04.03.2026)",
+        "ad.top": "Совет: держите админ-чат закрытым",
+        "ad.btn": "Советы админам",
+        "ad.note": "Можно удалить этот блок, если не нужен",
+        "toc.title": "📋 Содержание",
+        "toc.about": "1. О боте",
+        "toc.candidate": "2. Путь кандидата",
+        "toc.admin": "3. Путь админа",
+        "toc.storage": "4. Хранение и автоочистка",
+        "toc.ai": "5. AI-функции (опционально)",
+        "toc.env": "6. Настройка (.env)",
+        "toc.faq": "7. FAQ",
+        "about.title": "1. 🤖 О боте",
+        "about.desc1": "<strong>@hire_filter_bot</strong> автоматизирует отбор кандидатов в Telegram и отправляет полный профиль в приватный админ-чат с кнопками Принять/Отклонить.",
+        "about.desc2": "<strong>Основные возможности:</strong>",
+        "about.f1": "Анкета шаг за шагом: имя, телефон, email, портфолио, подробно “о себе”.",
+        "about.f2": "Валидация: отсекает абракадабру в имени, неправильные email, короткие ответы.",
+        "about.f3": "Случайная пауза (10–40 мин) перед тестовым (человечный сценарий).",
+        "about.f4": "Собирает Drive-ссылку на тест и пересылает профиль в админ-чат.",
+        "about.f5": "Кнопки решения; защита от двойного клика; сообщение кандидату.",
+        "about.f6": "Автоочистка: анкеты без тестового удаляются после 30 дней неактивности.",
+        "candidate.title": "2. 🧑‍💻 Путь кандидата",
+        "candidate.s1": "Кандидат начинает с <code>/start</code>.",
+        "candidate.s2": "Бот спрашивает и проверяет: имя → телефон → email → портфолио → “о себе”.",
+        "candidate.s3": "После анкеты бот ждёт случайное время (10–40 мин).",
+        "candidate.s4": "Бот спрашивает: “Готов(а) к тестовому? Да/Нет”.",
+        "candidate.s5": "Если Да: бот отправляет текст тестового (<code>TEST_TEXT</code>) и просит Drive-ссылку.",
+        "candidate.s6": "Кандидат отправляет Drive-ссылку; бот подтверждает проверку.",
+        "candidate.tip.title": "💡 Совет:",
+        "candidate.tip.text": "Нужно открыть доступ: “anyone with the link”.",
+        "candidate.warn.title": "⚠️ Важно:",
+        "candidate.warn.text": "После отказа кандидат не может подать анкету повторно (блок на /start).",
+        "admin.title": "3. 🧾 Путь админа",
+        "admin.desc": "Когда получена тестовая ссылка, бот отправляет профиль в админ-чат с кнопками:",
+        "admin.t1": "Действие",
+        "admin.t2": "Что происходит",
+        "admin.a1": "Кандидату приходит “кандидатура заинтересовала, скоро свяжутся”. Кнопки исчезают.",
+        "admin.a2": "Кандидату приходит отказ, и он блокируется от повторной анкеты.",
+        "storage.title": "4. 💾 Хранение и автоочистка",
+        "storage.s1": "Файлы хранятся тут: <code>hosting/candidati/&lt;telegram_id&gt;.txt</code>",
+        "storage.s2": "Профиль: имя, телефон, email, портфолио, о себе, теги/summary (опц.), тест-ссылка, статус.",
+        "storage.s3": "Если тест-ссылки нет и 30 дней неактивности → профиль удаляется.",
+        "ai.title": "5. 🧠 AI-функции (опционально)",
+        "ai.a1": "Отвечает только на вопросы по теме найма в контексте шага.",
+        "ai.a2": "Игнорирует рандом/математику/не по теме.",
+        "ai.a3": "Может сделать summary + skill tags из “о себе” без выдумок.",
+        "env.title": "6. ⚙️ Настройка (.env)",
+        "faq.title": "7. ❓ FAQ",
+        "faq.q1": "Почему вопрос про тестовое приходит позже?",
+        "faq.a1": "Бот ставит случайную паузу (10–40 минут), имитируя человеческую проверку.",
+        "faq.q2": "Где хранятся профили?",
+        "faq.a2": "В <code>hosting/candidati/&lt;telegram_id&gt;.txt</code>.",
+        "footer.copyright": "© 2026 @hire_filter_bot – Документация",
+        "footer.top": "Наверх",
+      }
+    };
+
+    function applyLang(lang){
+      document.querySelectorAll("[data-i18n]").forEach(el=>{
+        const key = el.getAttribute("data-i18n");
+        const val = translations?.[lang]?.[key];
+        if(!val) return;
+        el.innerHTML = val;
+      });
+      document.querySelectorAll(".lang-btn").forEach(b=>{
+        b.classList.toggle("active", b.getAttribute("data-lang")===lang);
+      });
+      localStorage.setItem("doc_lang", lang);
+    }
+
+    document.querySelectorAll(".lang-btn").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        applyLang(btn.getAttribute("data-lang"));
+      });
+    });
+
+    const saved = localStorage.getItem("doc_lang") || "en";
+    applyLang(saved);
+  </script>
+</body>
+</html>
